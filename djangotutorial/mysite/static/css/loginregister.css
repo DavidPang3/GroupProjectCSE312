@@ -1,0 +1,44 @@
+.backgroundcolor{
+    height: 30vh;
+    background-color: rgb(18, 18, 56);
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.forms{
+    display: flex;
+    gap: 25vw;
+   
+    justify-content: center;
+    height: 40vh;
+}
+
+.forms form input{
+    text-align: center;
+    height: 8vh;
+    border-radius: 10px; 
+    font-size: 20px;
+}
+
+.forms form{
+    display: flex;
+    flex-direction: column;
+}
+
+.submitbutton{
+    color: black;
+    background-color: rgb(194, 194, 194);
+    transition: .2s;
+}
+
+.submitbutton:hover{
+    cursor: pointer;
+    background-color: rgb(158, 158, 158);;
+    transition: .2s;
+}

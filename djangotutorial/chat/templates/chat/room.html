@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/css/room.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Home </a>
+        <a href="/chat/">Community </a>
+        <a href="/logout/">{{username}} </a>
+    </div>
+
+    <div class="flexrow">
+        <div class="column1"> 
+            <h1> Talk about some recipes! </h1>
+            <div id="chat-log" style="width: 800px; height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;"></div><br>
+            <input id="chat-message-input" type="text" size="100"><br>
+            <input id="chat-message-submit" type="button" value="Send">
+            {{ room_name|json_script:"room-name" }}
+            
+
+            <form id="upload-form" action="/chat/uploads/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="id_title">Title:</label>
+                <input type="text" name="title" id="id_title" maxlength="50" required>
+
+                <label for="id_file">File:</label>
+                <input type="file" name="file" id="id_file" required>
+
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+
+        <div class="column2">
+        </div>
+    </div>
+
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+        //change ws to wss for production
+        const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
+    
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const chatLog = document.querySelector('#chat-log');
+            const message = data.message;
+            const messageDiv = document.createElement('div');
+            
+            if (message.includes('<img')) {
+                messageDiv.innerHTML = message; 
+            } else {
+                messageDiv.textContent = message;  
+            }
+    
+            chatLog.appendChild(messageDiv);
+            chatLog.scrollTop = chatLog.scrollHeight;  
+        };
+    
+        //enter key simulates click send button
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+    
+        //this is called when send button is clicked
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            let message = messageInputDom.value;
+            const imgRegex = /(https?:\/\/.*\.(?:png|jpg|gif))/i;
+            if (imgRegex.test(message)) {
+                message = `<img src="${message}" alt="Image" />`; 
+            }
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInputDom.value = '';  
+        };
+    
+
+        document.querySelector('#upload-form').onsubmit = function(event) {
+            event.preventDefault();  
+    
+            const formData = new FormData(this);
+            fetch('/chat/uploads/', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+              
+                if (data.image_url) {
+                    const imageUrl = data.image_url;
+                    chatSocket.send(JSON.stringify({
+                        'message': `<img src="${imageUrl}" alt="Uploaded Image">`
+                    }));
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('ERROR UPLAODING IMAGES!!:', error);
+            });
+        };
+    </script>
+</body>
+</html>
