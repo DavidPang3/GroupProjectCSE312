@@ -4,6 +4,7 @@
 #unfinished 
 #https://duckduckgo.com/?q=web+development&ia=web example query
 #from request import Request
+#ready to submit
 
 '''
     if(string == "%20" or string == "+"):
