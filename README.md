@@ -1,3 +1,5 @@
+#Please read all before proceeding
+
 # for objective 1, 
 I included media uploads to my websockets chatbox but the page must be reloaded in order for them to show.
 I believe this still completes the minimum requirements for objective 1 as long as I'm able to upload images, 
@@ -18,3 +20,4 @@ website is secured https and will be using 'wss' for websockets still.
 ### extra,
 I know my website doesn't look too good especially with having to reload for my images in a chatbox
 that automatically updates for texts, but please cut me some slack because I'm working on this project alone. Thankyou.
+My presentation date is on the later dates so I will make sure to update the frontend html and responses before then.
