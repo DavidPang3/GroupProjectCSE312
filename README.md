@@ -7,7 +7,7 @@ and I completed the criteria and test cases.
 
 **
 there are password requirements for registration otherwise it will return none, the requirements are the same as the homework's:
-minimum 8 in length, includes at least 1 number, 1 letter, 1 capital, and 1 special character**
+minimum 8 in length, includes at least 1 number, 1 letter, 1 capital, and 1 special character **
 
 # for objective 2,
 the chatbox will be in community, you must be logged in first.
