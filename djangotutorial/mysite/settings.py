@@ -25,10 +25,10 @@ SECRET_KEY = 'django-insecure-835ro2&7pj$nykayui!7)3i*8l&t$$3x@be&h0giwx615qz*t4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'davidpangspersonalwebsite.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'david.davidpangswebsite.live']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://davidpangspersonalwebsite.com',
+    'https://david.davidpangswebsite.live',
 ]
 
 # Application definition
@@ -138,6 +138,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'mysite' / 'static',  # HelloWorld!
 ]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

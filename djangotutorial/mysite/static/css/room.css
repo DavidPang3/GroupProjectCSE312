@@ -18,3 +18,16 @@ body{
     background-position: center;
     margin-left: -10vw;
 }
+
+.schedule{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: fit-content;
+
+}
+
+.schedule input{
+    width: 40vw;
+    height: 40px;
+}

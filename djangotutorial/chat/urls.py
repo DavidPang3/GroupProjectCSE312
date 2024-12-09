@@ -5,7 +5,8 @@ from . import views
 
 urlpatterns = [
     path("", views.room, name="room"),
-    path('uploads/', views.uploads, name="uploads")
+    path('uploads/', views.uploads, name="uploads"),
+    path("schedule/", views.schedule, name="schedule")
 ]
 
 urlpatterns += static('images/',  document_root='/root/djangotutorial/chat/images') 

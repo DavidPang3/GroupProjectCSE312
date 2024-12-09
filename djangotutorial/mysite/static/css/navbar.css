@@ -3,6 +3,7 @@
     flex-direction: row;
     gap: 50px;
     justify-content: center;
+    background-color: rgb(29, 29, 29);
 }
 
 .navbar a{
