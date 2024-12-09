@@ -24,5 +24,5 @@ def handle_uploaded_file(f, request, username, current_time):
 
     realfilepath = f'/chat/images/{file_name}'
     imgtag = f'<img src="{realfilepath}" alt="Image" />'
-    chat_collection.insert_one({"text": f'({current_time}) {username}: {imgtag}'})
+    chat_collection.insert_one({"text": f'{username}: {imgtag}'})
 

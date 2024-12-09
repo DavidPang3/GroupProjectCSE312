@@ -7,6 +7,7 @@ from pytz import timezone
 from datetime import datetime
 import time
 import threading
+from app.views import stats_collection
 
 # MongoDB setup
 easterntime = timezone('US/Eastern')
@@ -58,6 +59,11 @@ class ChatConsumer(WebsocketConsumer):
                 self.global_group_name, {"type": "chat.message", "message": message}
             )
         else:
+            initialfind = stats_collection.find_one({"username": self.username})
+            messages_sent = int(initialfind.get("messages_sent"))
+            messages_sent += 1
+            stats_collection.update_one({"username": self.username}, {"$set": {"messages_sent": str(messages_sent)}}) 
+
             current_time = self.get_current_time()
             chat_collection.insert_one({'text': f'({current_time}) {self.username}: {message}'})
             async_to_sync(self.channel_layer.group_send)( 

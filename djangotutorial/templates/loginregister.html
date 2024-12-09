@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/static/css/loginregister.css">
     <link rel="stylesheet" href="/static/css/navbar.css">
 
+
     <script src="/static/js/functions.js" defer></script>
 
 </head>
@@ -17,7 +18,9 @@
         <a href="/">Home </a>
         <a href="/chat/">Community </a>
         <a href="/logout/">{{username}} </a>
+        <a href="/stats/">Stats </a>
         </div>
+        <h3>password requirements: minimum 8 characters, includes numbers, letters, and special character, and a capital</h3>
     </div>
  
     <div class="forms">
@@ -33,11 +36,12 @@
     <form action="/register/" method="POST">
         {% csrf_token %}
         <h1>Don't have an account yet?<br> Register</h1>
-        <h3><strong>password requirements: minimum 8 characters, includes numbers, letters, and special character, and a capital</strong></h3>
         <input type="text" name="username" placeholder="Username">
         <input type="password" name="password" placeholder="Password">
         <input type="submit" class="submitbutton">
+        
     </form>
+    
    </div>
 
    <div class="backgroundcolor">

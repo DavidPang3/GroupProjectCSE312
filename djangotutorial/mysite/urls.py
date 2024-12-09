@@ -28,6 +28,7 @@ urlpatterns = [
     path('', views.home),
     path('loginregister/', views.loginregister),
     path("chat/", include("chat.urls")),
+    path("stats/", views.stats),
 
     #css
     path('homecss/', views.homecss),

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/static/css/stats.css">
+    <link rel="stylesheet" href="/static/css/navbar.css">
+
+    <script src="/static/js/functions.js" defer></script>
+
+</head>
+
+<body>
+
+ 
+    <div class="navbar">
+        <a href="/">Home </a>
+        <a href="/chat/">Community </a>
+        <a href="/logout/">{{username}} </a>
+        <a href="/loginregister">Login/Register </a>
+        <a href="/stats/">Stats </a>
+        </div>
+
+        <div class="backgroundz">
+        <h1> Hello, {{username2}}!</h1>
+        <h2>Here are your stats:</h2>
+        <ul>
+            <li>Number of times visited home page: {{homerequestsmade}}</li>
+            <li>Number of times visited your stats: {{statsrequestmade}}</li>
+            <li>Number of messages you've sent: {{messages_sent}}</li>
+            <li>Number of images you've uploaded: {{images_sent}}</li>
+            <li>Number of times logged in: {{loggedin}}</li>
+        </ul>
+    </div>
+
+   
+
+</body>

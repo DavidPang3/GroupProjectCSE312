@@ -42,3 +42,11 @@ body{
     background-color: rgb(158, 158, 158);;
     transition: .2s;
 }
+
+.backgroundcolor h3{
+    text-align: center;
+    align-content: center;
+    color: white;
+    font-weight: 300;
+    margin-top: 10vh;
+}

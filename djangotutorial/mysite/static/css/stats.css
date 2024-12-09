@@ -1,0 +1,45 @@
+
+
+body{
+    background-color: gray;
+    background-image: url(../images/profilebackgroundidk.jpg);
+    overflow: hidden;
+}
+
+.backgroundz {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    height: 100vh; 
+    margin: 0 auto;
+    margin-top: 10vh;
+}
+
+
+.backgroundz h1{
+    font-size: 80px;
+    margin: 0px;
+}
+
+.backgroundz h2{
+    font-size: 60px;
+    margin: 0px;
+    margin-bottom: 5vh;
+}
+
+.backgroundz ul{
+    font-size: 50px;
+    list-style-type: none; 
+    padding: 10px; 
+    margin: 20px auto; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); 
+    text-align: center; 
+    background-color: #fff; 
+}
+
+.backgroundz ul li{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

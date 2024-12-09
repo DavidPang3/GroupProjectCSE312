@@ -6,26 +6,13 @@ from pymongo import MongoClient #pip install pymongo
 from django import forms
 from .forms import UploadFileForm, handle_uploaded_file
 import time
-from app.views import mongo_client, user_collection, db, chat_collection
+from app.views import mongo_client, user_collection, db, chat_collection, stats_collection
 import threading
 from pytz import timezone
 from datetime import datetime, timedelta
 
-easterntime = timezone('US/Eastern')
-current_time = datetime.now(easterntime)
-current_time = current_time.strftime('%I:%M:%S %p')
-def time_update_loop():
-    global current_time  
-    while True:
-        current_time_obj = datetime.strptime(current_time, "%I:%M:%S %p")
-        current_time_obj = easterntime.localize(current_time_obj) 
-        current_time_obj += timedelta(seconds=1)
-        current_time = current_time_obj.strftime('%I:%M:%S %p')
-        time.sleep(1) 
 
-thread = threading.Thread(target=time_update_loop, daemon=True)
-thread.start()
-        
+
 
 # Create your views here.
 def room(request):
@@ -53,6 +40,11 @@ def uploads(request): #this is indeed called on /uploads/ path
             stored_user = user_collection.find_one({"token": hashed_token})
             if stored_user:
                 username = stored_user.get('username')
+
+                initialfind = stats_collection.find_one({"username": username})
+                images_sent = int(initialfind.get("images_sent"))
+                images_sent += 1
+                stats_collection.update_one({"username": username}, {"$set": {"images_sent": str(images_sent)}})
             
     print("uploads was called")
     if request.method == "POST":
@@ -65,6 +57,7 @@ def uploads(request): #this is indeed called on /uploads/ path
         return HttpResponseNotFound("Page not found")
     
 
+current_time = 0
 
 def schedule(request):
     statictime = current_time
