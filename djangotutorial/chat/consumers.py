@@ -8,6 +8,8 @@ from datetime import datetime
 import time
 import threading
 from app.views import stats_collection
+from app.views import db
+
 
 # MongoDB setup
 easterntime = timezone('US/Eastern')
@@ -16,9 +18,11 @@ mongo_client = MongoClient("mongo")
 db = mongo_client["cse312"]
 chat_collection = db["chat"]
 user_collection = db["user"]
+image_collection = db["images"]
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
+        print("NEW USER CONNECTED YIPEEE!")
         token = self.scope.get('cookies', {}).get('token')
         username = "Guest"
         if token:
@@ -40,6 +44,7 @@ class ChatConsumer(WebsocketConsumer):
                 async_to_sync(self.channel_layer.group_send)( 
                     self.room_group_name, {"type": "chat.message", "message": f"{msg['text']}"}
                 )
+        
 
         self.accept()
 
@@ -54,11 +59,16 @@ class ChatConsumer(WebsocketConsumer):
         message = text_data_json["message"]
 
         if "<img" in message:
-            chat_collection.insert_one({'text': message})
-            async_to_sync(self.channel_layer.group_send)( 
-                self.global_group_name, {"type": "chat.message", "message": message}
+            print("image uploaded!")
+            #init = image_collection.find({'imgtag': message})
+            #title = init.get('title')
+            current_time = self.get_current_time()
+            chat_collection.insert_one({'text': f'({current_time}) {self.username}: {message}'})
+            async_to_sync(self.channel_layer.group_send)( #omg this is called!!!
+                self.global_group_name, {"type": "chat.message", "message": f"({current_time}) {self.username}: {message}"}
             )
         else:
+            print("text uploaded!")
             initialfind = stats_collection.find_one({"username": self.username})
             messages_sent = int(initialfind.get("messages_sent"))
             messages_sent += 1

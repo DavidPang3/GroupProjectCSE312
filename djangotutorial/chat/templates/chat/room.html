@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/static/css/navbar.css">
     <link rel="stylesheet" href="/static/css/room.css">
 </head>
-<body>
+<body style="background-color: rgb(202, 134, 55);">
     <div class="navbar">
         <a href="/">Home </a>
         <a href="/chat/">Community </a>
@@ -16,20 +16,31 @@
 
     <div class="flexrow">
         <div class="column0">
-            <span id="current-time" style="font-size: 18px;"></span>
+            <div id="current-time" style="font-size: 30px; width: 98vw; background-color: white; height: 6vh; text-align: center; display: flex; justify-content: center; align-items: center;">
+            </div>
         </div>
 
         <div class="column1"> 
-            <h1> Talk about some recipes! </h1>
-            <h1> <b>you will need to refresh page for image uploads</b></h1>
-            <div id="chat-log" style="width: 1200px; height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;"></div><br>
-            <input id="chat-message-input" type="text" size="100"><br>
-            <input id="chat-message-submit" type="button" value="Send">
-            <h1> Input your time delay in seconds below.. you pressed the send button at <span id="send-time"></span></h1>
-            <input type="text" name="timestamp" id="timestampz"> 
+            <h1> Welcome to the community hub! </h1>
+            <h1> Here you can chat and post images about anything: </h1>
+            <div id="chat-log" style="width: 90vw; height: 600px; overflow-y: auto; border: 2px solid #ccc; padding: 10px; background-color: rgb(248, 240, 197);"></div><br>
+            <input id="chat-message-input" type="text" size="100" style="margin-bottom: 10px;
+            font-size: 18px;
+            padding: 10px;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);"><br>
+            <input id="chat-message-submit" type="button" value="Send" class="idk">
+            <h1 style="width: 100vw;"> Input your time delay (in seconds) below and click the send message button above along with your desired message <br> You pressed the send button at [<span id="send-time"></span>]</h1>
+            <input type="text" name="timestamp" id="timestampz" class="timestuff" style=" margin-bottom: 50px;
+            font-size: 18px; 
+            padding: 10px; 
+            width: 100%; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); "> 
             {{ room_name|json_script:"room-name" }}
 
-            <form id="upload-form" action="/chat/uploads/" method="post" enctype="multipart/form-data">
+            <form id="upload-form" enctype="multipart/form-data" style="margin-bottom: 50px;">
                 {% csrf_token %}
 
                 <label for="id_title">Title:</label>
@@ -38,18 +49,19 @@
                 <label for="id_file">File:</label>
                 <input type="file" name="file" id="id_file" required>
 
-                <button type="submit">Upload</button>
+                <button type="submit" id="upload-button">Upload</button>
             </form>
         </div>
 
         <div class="column2">
         </div>
+
     </div>
 
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
-    
+
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             const chatLog = document.querySelector('#chat-log');
@@ -69,19 +81,19 @@
                 chatLog.scrollTop = chatLog.scrollHeight;  
             }
         };
-    
+
         document.querySelector('#chat-message-input').focus();
         document.querySelector('#chat-message-input').onkeyup = function(e) {
             if (e.key === 'Enter') {
                 document.querySelector('#chat-message-submit').click();
             }
         };
-    
+
         document.querySelector('#chat-message-submit').onclick = function(e) {
             const messageInputDom = document.querySelector('#chat-message-input');
             const timestampInputDom = document.querySelector('#timestampz');
             const currentTimeElement = document.querySelector('#send-time');
-            
+
             let message = messageInputDom.value;
             let delay = parseInt(timestampInputDom.value, 10) || 0;
 
@@ -105,7 +117,7 @@
 
         document.querySelector('#upload-form').onsubmit = function(event) {
             event.preventDefault();  
-    
+            console.log("upload-forms was called!!!")
             const formData = new FormData(this);
             fetch('/chat/uploads/', {
                 method: 'POST',
@@ -114,11 +126,12 @@
             .then(response => response.json())
             .then(data => {
                 if (data.image_url) {
-                    const imageUrl = data.image_url;
+                    const imageUrl1 = data.image_url;
+                    const imageUrl = `/chat/images/${imageUrl1}`;
+                    console.log(`your image url should be: ${imageUrl}`);
                     chatSocket.send(JSON.stringify({
                         'message': `<img src="${imageUrl}" alt="Uploaded Image">`
                     }));
-                    location.reload();
                 }
             })
             .catch(error => {

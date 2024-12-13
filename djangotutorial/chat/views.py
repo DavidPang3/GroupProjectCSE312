@@ -10,6 +10,7 @@ from app.views import mongo_client, user_collection, db, chat_collection, stats_
 import threading
 from pytz import timezone
 from datetime import datetime, timedelta
+from django.http import JsonResponse
 
 
 
@@ -50,11 +51,13 @@ def uploads(request): #this is indeed called on /uploads/ path
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            handle_uploaded_file(request.FILES["file"], request, username, current_time)
-            time.sleep(1)
-            return HttpResponseRedirect("/chat/") #doesn't redirect because we using websockets stream 
+            image_url = handle_uploaded_file(request.FILES["file"], request, username, current_time)
+            
+            return JsonResponse({'image_url': image_url})
+        else:
+            return JsonResponse({'error': 'Invalid form'}, status=400)
     else:
-        return HttpResponseNotFound("Page not found")
+        return JsonResponse({'error': 'Invalid request'}, status=400)
     
 
 current_time = 0
